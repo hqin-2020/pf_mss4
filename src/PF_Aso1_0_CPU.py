@@ -244,9 +244,16 @@ def recursive(Input):
     St = Xt[2:5,:]
     ones = np.ones([3,1])
 
-    Zt_next = Azo + Azz @ Zt
-    St_next = Aso + Ass @ St
-    Xt_next = np.concatenate([Zt_next,St_next])
+    Φ = sp.linalg.solve(ones@Bz1@Bz1.T@ones.T + Bs@Bs.T, ones@Bz1@Bz.T)
+    Γ = sp.linalg.solve(ones@Bz1@Bz1.T@ones.T + Bs@Bs.T, Bs@Bs.T)
+    
+    mean = np.vstack([Azo + Azz@Zt + Φ.T@(Dt_next-ones*Zt1 - ones*Zt2 - Aso - Ass@St),\
+                      Aso + Ass@St + Γ.T@(Dt_next-ones*Zt1 - ones*Zt2 - Aso - Ass@St)])
+    cov = np.vstack([np.hstack([Bz@Bz.T, np.zeros([2,3])]),\
+                     np.hstack([np.zeros([3,2]), Bs@Bs.T])]) -\
+          np.vstack([Φ.T, Γ.T]) @ (ones@Bz1@Bz1.T@ones.T+Bs@Bs.T)@np.hstack([Φ, Γ])
+
+    Xt_next = sp.stats.multivariate_normal.rvs(mean.flatten(), cov).reshape(-1,1)
     
     St1 = Xt[2,0]; St2 = Xt[3,0]; St3 = Xt[4,0];   
     Zt_next_1 = Xt_next[0,0];  Zt_next_2 = Xt_next[1,0];  St_next_1 = Xt_next[2,0];  St_next_2 = Xt_next[3,0];  St_next_3 = Xt_next[4,0];  
