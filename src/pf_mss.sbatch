@@ -1,17 +1,18 @@
 #!/bin/bash
 
+#SBATCH --account=pi-lhansen
 #SBATCH --job-name=pf_mss
 #SBATCH --output=pf_mss.%A_%a.out
 #SBATCH --error=pf_mss.%A_%a.err
-#SBATCH --time=0-3:00:00
-#SBATCH --partition=broadwl
+#SBATCH --time=0-1:00:00
+#SBATCH --partition=standard
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=28
-#SBATCH --mem-per-cpu=2000
-#SBATCH --array=1-130
-#SBATCH --constraint=fdr
+#SBATCH --mem=32G
+#SBATCH --array=1-120
+#SBATCH --exclude=mcn28
 
-module load python/anaconda-2021.05
+module load python/booth/3.10/3.10.4
 
-python3 multi_seeds.py 
-python3 Run_Aso1_0_CPU_$SLURM_ARRAY_TASK_ID.py  
+srun python3 multi_seeds.py
+srun python3 Run_Aso1_0_CPU_$SLURM_ARRAY_TASK_ID.py  

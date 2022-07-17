@@ -1,14 +1,16 @@
 #!/bin/bash
 
+#SBATCH --account=pi-lhansen
 #SBATCH --job-name=collection
 #SBATCH --output=collection.out
 #SBATCH --error=collection.err
 #SBATCH --time=24:00:00
-#SBATCH --partition=bigmem2
+#SBATCH --partition=standard
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=2
-#SBATCH --mem=128G
+#SBATCH --mem=56G
+#SBATCH --exclude=mcn28
 
-module load python/anaconda-2021.05
+module load python/booth/3.10/3.10.4
 
-python3 collection.py
+srun python3 collection.py

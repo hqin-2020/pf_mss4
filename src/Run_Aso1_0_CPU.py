@@ -16,7 +16,7 @@ if __name__ == '__main__':
     workdir = os.path.dirname(os.getcwd())
     srcdir = os.getcwd()
     datadir = workdir + '/data/'
-    outputdir = '/project2/lhansen/particle_filtering/pf_mss4/'
+    outputdir = workdir + '/output/'
 
     seed = 0
 
@@ -24,7 +24,7 @@ if __name__ == '__main__':
     obs_series = np.array(obs_series)
 
     T = obs_series.shape[1]
-    N = 100_000
+    N = 10_000
 
     case = 'simulated data, seed = ' + str(seed) + ', T = ' + str(T) + ', N = ' + str(N)
     try: 
@@ -77,7 +77,7 @@ if __name__ == '__main__':
         H_t_next_particle = [i[2] for i in Output]
         ν_t_next_particle = [i[3] for i in Output]    
         del(Output)
-        if t in [99,199,281]:
+        if t == 281:
             with open(casedir + 'θ_' + str(t+1) + '.pkl', 'wb') as f:
                 pickle.dump(θ_t_next_particle, f)
         del(θ_t_next_particle)

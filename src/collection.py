@@ -7,7 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 sns.set()
 
-batch_num = 130
+batch_num = 120
 
 workdir = os.path.dirname(os.getcwd())
 srcdir = os.getcwd()
@@ -19,7 +19,7 @@ obs_series = pd.read_csv(datadir + 'data.csv', delimiter=',', header = None)
 obs_series = np.array(obs_series)
 
 T = obs_series.shape[1]
-N = 100_000
+N = 10_000
 
 θ_name = ['λ', 'η', \
         'b11', 'b22', \
